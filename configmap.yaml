@@ -3,4 +3,6 @@ kind: ConfigMap
 metadata:
   name: my-configmap
 data:
-  MLFLOW_TRACKING_URI: "https://dagshub.com/DSrinkudhania/mlflow_wine_prediction.mlflow"  # Replace with the actual tracking URI
+  MLFLOW_TRACKING_URI: "https://dagshub.com/DSrinkudhania/mlflow_wine_prediction.mlflow"
+  MLFLOW_TRACKING_USERNAME: "DSrinkudhania"
+  MLFLOW_TRACKING_PASSWORD: "662b90ce80c767f367e647b9eb3779b97cd9cd61"
