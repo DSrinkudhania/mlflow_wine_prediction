@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-configmap
+data:
+  MLFLOW_TRACKING_URI: "https://dagshub.com/DSrinkudhania/mlflow_wine_prediction.mlflow"  # Replace with the actual tracking URI

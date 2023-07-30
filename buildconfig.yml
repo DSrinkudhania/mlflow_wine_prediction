@@ -1,0 +1,22 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: mlflow_wine_prediction-build
+  labels:
+    app: mlflow_wine_prediction
+spec:
+  source:
+    contextDir: /mlflow_wine_prediction
+    type: Git
+    git:
+      uri: https://github.com/DSrinkudhania/mlflow_wine_prediction.git  # Replace with your GitHub repo URL
+  strategy:
+    type: Source
+    sourceStrategy:
+      from:
+        kind: DockerImage
+        name: python:3.9  # Base builder image for S2I, you can change it if needed
+  output:
+    to:
+      kind: ImageStreamTag
+      name: mlflow_wine_predict:latest  # Specify the desired image name and tag here

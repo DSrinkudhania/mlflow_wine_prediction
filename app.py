@@ -11,11 +11,19 @@ import mlflow
 from mlflow.models import infer_signature
 import mlflow.sklearn
 
+from flask import Flask, request, jsonify
+
 import logging
 
 logging.basicConfig(level=logging.WARN)
 logger = logging.getLogger(__name__)
 
+# Read MLflow tracking URI from environment variable
+tracking_uri = os.environ.get("MLFLOW_TRACKING_URI")
+if tracking_uri:
+    mlflow.set_tracking_uri(tracking_uri)
+
+app = Flask(__name__)
 
 def eval_metrics(actual, pred):
     rmse = np.sqrt(mean_squared_error(actual, pred))
@@ -23,8 +31,8 @@ def eval_metrics(actual, pred):
     r2 = r2_score(actual, pred)
     return rmse, mae, r2
 
-
-if __name__ == "__main__":
+@app.route("/train", methods=["POST"])
+def train_model():
     warnings.filterwarnings("ignore")
     np.random.seed(40)
 
@@ -48,8 +56,8 @@ if __name__ == "__main__":
     train_y = train[["quality"]]
     test_y = test[["quality"]]
 
-    alpha = float(sys.argv[1]) if len(sys.argv) > 1 else 0.5
-    l1_ratio = float(sys.argv[2]) if len(sys.argv) > 2 else 0.5
+    alpha = float(request.args.get("alpha", 0.5))
+    l1_ratio = float(request.args.get("l1_ratio", 0.5))
 
     with mlflow.start_run():
         lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
@@ -58,11 +66,6 @@ if __name__ == "__main__":
         predicted_qualities = lr.predict(test_x)
 
         (rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
-
-        print("Elasticnet model (alpha={:f}, l1_ratio={:f}):".format(alpha, l1_ratio))
-        print("  RMSE: %s" % rmse)
-        print("  MAE: %s" % mae)
-        print("  R2: %s" % r2)
 
         mlflow.log_param("alpha", alpha)
         mlflow.log_param("l1_ratio", l1_ratio)
@@ -88,3 +91,8 @@ if __name__ == "__main__":
             )
         else:
             mlflow.sklearn.log_model(lr, "model", signature=signature)
+
+    return jsonify({"message": "Model training completed successfully!"})
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)

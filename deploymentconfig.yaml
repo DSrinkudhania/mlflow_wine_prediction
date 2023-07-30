@@ -1,0 +1,25 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  name: mlflow_wine_prediction
+  labels:
+    app: mlflow_wine_prediction
+spec:
+  replicas: 1
+  selector:
+    app: mlflow_wine_prediction
+    deploymentconfig: mlflow_wine_prediction
+  template:
+    metadata:
+      labels:
+        app: mlflow_wine_prediction
+        deploymentconfig: mlflow_wine_prediction
+    spec:
+      containers:
+      - name: mlflow_wine_prediction
+        image: mlflow_wine_prediction:latest  # Reference to the ImageStream, use :latest to get the latest built image
+        envFrom:
+          - configMapRef:
+              name: my-configmap
+        ports:
+          - containerPort: 8080
