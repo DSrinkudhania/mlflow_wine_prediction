@@ -1,23 +1,23 @@
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
-  name: mlflow_wine_prediction
+  name: mlflow-wine-prediction  # Container name updated with hyphens
   labels:
-    app: mlflow_wine_prediction
+    app: mlflow-wine-prediction  # Labels should also use hyphens
 spec:
   replicas: 1
   selector:
-    app: mlflow_wine_prediction
-    deploymentconfig: mlflow_wine_prediction
+    app: mlflow-wine-prediction
+    deploymentconfig: mlflow-wine-prediction
   template:
     metadata:
       labels:
-        app: mlflow_wine_prediction
-        deploymentconfig: mlflow_wine_prediction
+        app: mlflow-wine-prediction
+        deploymentconfig: mlflow-wine-prediction
     spec:
       containers:
-      - name: mlflow_wine_prediction
-        image: mlflow_wine_prediction:latest  # Reference to the ImageStream, use :latest to get the latest built image
+      - name: mlflow-wine-prediction  # Container name updated with hyphens
+        image: mlflow_wine_predict:latest
         envFrom:
           - configMapRef:
               name: my-configmap
