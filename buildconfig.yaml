@@ -6,7 +6,7 @@ metadata:
     app: mlflow_wine_prediction
 spec:
   source:
-    contextDir: /mlflow_wine_prediction
+    contextDir: mlflow_wine_prediction
     type: Git
     git:
       uri: https://github.com/DSrinkudhania/mlflow_wine_prediction.git  # Replace with your GitHub repo URL
