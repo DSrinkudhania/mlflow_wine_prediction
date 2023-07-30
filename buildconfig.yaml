@@ -1,7 +1,7 @@
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
-  name: mlflow-wine-prediction
+  name: mlflow-wine-prediction-build
   labels:
     app: mlflow_wine_prediction
 spec:
