@@ -1,7 +1,6 @@
 import os
 import warnings
 import sys
-
 import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
@@ -74,6 +73,8 @@ if __name__ == "__main__":
         predictions = lr.predict(train_x)
         signature = infer_signature(train_x, predictions)
 
+        remote_tracking_uri="https://dagshub.com/DSrinkudhania/mlflow_wine_prediction.mlflow"
+        mlflow.set_tracking_uri(remote_tracking_uri)
         tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
 
         # Model registry does not work with file store
