@@ -19,4 +19,4 @@ ENV MLFLOW_TRACKING_USERNAME=DSrinkudhania
 ENV MLFLOW_TRACKING_PASSWORD=662b90ce80c767f367e647b9eb3779b97cd9cd61
 
 # Define the command to run your Flask app when the container starts
-CMD ["python", "app.py"]
+CMD ["gunicorn", "app:app", "-b", "0.0.0.0:8000"]
